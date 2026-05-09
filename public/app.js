@@ -56,22 +56,14 @@ const confirmYesBtn = document.getElementById("confirm-yes");
 const confirmNoBtn = document.getElementById("confirm-no");
 const TOAST_DURATION_MS = 4200;
 
-/** AbortController del modal de confirmación actual (revoca listeners al cerrar o al reabrir). */
 let confirmModalController = null;
 
-/** Lista de categorías cargada desde la API (actualizada por fetchCategories). */
 let appCategories = [];
 
-/** Categorías elegidas en el formulario de crear evento (id + nombre). */
 let selectedCategories = [];
 
-/** Categorías del evento en el modal de edición (se sincronizan al guardar). */
 let editSelectedCategories = [];
 
-/**
- * Obtiene categorías desde el servidor, las guarda en appCategories y devuelve el arreglo.
- * @returns {Promise<Array>}
- */
 function populateCategorySelectForCreate(categories = appCategories) {
   if (!categorySelect) return;
   categorySelect.innerHTML = "";
@@ -140,7 +132,6 @@ function populateFilterCategorySelect(categories = appCategories) {
   filterCategorySelect.value = valid ? previous : "";
 }
 
-/** IDs numéricos extraídos de `selectedCategories` para el body `{ categories: [...] }`. */
 function getSelectedCategoryIds() {
   return selectedCategories
     .map((c) => Number(c.id))
@@ -195,10 +186,6 @@ function closeConfirmModal() {
   }
 }
 
-/**
- * Muestra el modal de confirmación con título y mensaje, y ejecuta `onConfirm` al pulsar Confirmar.
- * Los listeners anteriores se eliminan vía AbortController antes de registrar los nuevos.
- */
 function showConfirmModal(title, message, onConfirm) {
   closeConfirmModal();
   if (!confirmModal || !confirmTitleEl || !confirmMessageEl) return;
@@ -295,12 +282,6 @@ function showMessage(message, type) {
   );
 }
 
-/**
- * Estado de carga en un botón: texto alternativo y disabled hasta `loading === false`.
- * @param {HTMLButtonElement | null | undefined} button
- * @param {boolean} loading
- * @param {string} [loadingText]
- */
 function setButtonLoading(button, loading, loadingText = "Cargando…") {
   if (!button) return;
   if (loading) {
@@ -542,7 +523,6 @@ function applyNavbarForRole() {
   }
 }
 
-/** Asignación de categorías al crear evento: solo administradores. */
 function applyCategoryManagementUiForRole() {
   const user = getUserFromToken();
   const isAdmin = user?.role === "admin";
