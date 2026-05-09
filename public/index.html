@@ -1,141 +1,256 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Manager</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="app-header" id="app-header">
-    <nav class="navbar" id="navbar" aria-label="Aplicación">
-      <div class="navbar-inner container">
-        <h1 class="app-title">Event Manager</h1>
-        <div class="nav-right">
-          <p id="user-info">Sin sesión</p>
-          <button id="logout-btn" type="button" class="btn btn-secondary">Logout</button>
-        </div>
-      </div>
-    </nav>
-    <nav class="app-subnav" id="app-subnav" aria-label="Secciones">
-      <div class="app-subnav-inner container">
-        <a href="#" id="nav-events">Eventos</a>
-        <a href="#" id="nav-my-events">Mis eventos</a>
-      </div>
-    </nav>
-  </header>
-
-  <main class="main-container container">
-    <div id="global-message"></div>
-
-    <div id="auth-section" class="view-section">
-      <section class="auth-card">
-        <h2>Cuenta</h2>
-        <div class="auth-tabs">
-          <button type="button" id="show-login" class="btn btn-secondary">Login</button>
-          <button type="button" id="show-register" class="btn btn-secondary">Registrarse</button>
-        </div>
-
-        <div id="login-form" class="auth-form form-stack">
-          <h3>Login</h3>
-          <input id="email" type="email" placeholder="Email" />
-          <input id="password" type="password" placeholder="Password" />
-          <div class="form-actions">
-            <button id="login-btn" type="button" class="btn btn-primary">Login</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header" id="app-header">
+      <nav class="navbar" id="navbar" aria-label="Aplicación">
+        <div class="navbar-inner container">
+          <h1 class="app-title">Event Manager</h1>
+          <div class="nav-right">
+            <p id="user-info">Sin sesión</p>
+            <button id="logout-btn" type="button" class="btn btn-secondary">
+              Logout
+            </button>
           </div>
-          <p id="login-message"></p>
         </div>
+      </nav>
+      <nav class="app-subnav" id="app-subnav" aria-label="Secciones">
+        <div class="app-subnav-inner container">
+          <a href="#" id="nav-events">Eventos</a>
+          <a href="#" id="nav-my-events">Mis eventos</a>
+        </div>
+      </nav>
+    </header>
 
-        <div id="register-form" class="auth-form form-stack hidden">
-          <h3>Registro</h3>
-          <input id="register-email" type="email" placeholder="Email" />
-          <input id="register-password" type="password" placeholder="Password" />
-          <div class="form-actions">
-            <button id="register-btn" type="button" class="btn btn-primary">Registrarse</button>
+    <main class="main-container container">
+      <div id="global-message"></div>
+
+      <div id="auth-section" class="view-section">
+        <section class="auth-card">
+          <h2>EVENT MANAGER</h2>
+          <div class="auth-tabs">
+            <button type="button" id="show-login" class="btn btn-secondary">
+              Login
+            </button>
+            <button type="button" id="show-register" class="btn btn-secondary">
+              Registrarse
+            </button>
           </div>
-          <p id="register-message"></p>
-        </div>
-      </section>
-    </div>
 
-    <div id="events-section" class="view-section hidden">
-      <section id="create-event-panel" class="create-event-panel">
-        <button
-          type="button"
-          id="toggle-create-event"
-          class="btn btn-secondary"
-          aria-expanded="false"
-          aria-controls="create-event-form-block"
-        >
-          Crear nuevo evento
-        </button>
-        <div
-          id="create-event-form-block"
-          class="create-event-form-block"
-          style="display: none"
-          role="region"
-          aria-labelledby="create-event-title"
-        >
-          <div class="create-event-form-card">
-            <h2 id="create-event-title">Crear evento</h2>
-            <div class="create-event-fields">
-              <input id="title" type="text" placeholder="Título" />
-              <input id="description" type="text" placeholder="Descripción" />
-              <input id="date" type="date" />
-              <input id="location" type="text" placeholder="Ubicación" />
+          <div id="login-form" class="auth-form form-stack">
+            <h3>Login</h3>
+            <input id="email" type="email" placeholder="Email" />
+            <input id="password" type="password" placeholder="Password" />
+            <div class="form-actions">
+              <button id="login-btn" type="button" class="btn btn-primary">
+                Login
+              </button>
             </div>
-            <div class="create-event-actions form-actions">
-              <button id="create-event-btn" type="button" class="btn btn-primary">Crear evento</button>
-            </div>
-            <p id="create-message"></p>
+            <p id="login-message"></p>
           </div>
+
+          <div id="register-form" class="auth-form form-stack hidden">
+            <h3>Registro</h3>
+            <input id="register-email" type="email" placeholder="Email" />
+            <input
+              id="register-password"
+              type="password"
+              placeholder="Password"
+            />
+            <div class="form-actions">
+              <button id="register-btn" type="button" class="btn btn-primary">
+                Registrarse
+              </button>
+            </div>
+            <p id="register-message"></p>
+          </div>
+        </section>
+      </div>
+
+      <div id="events-section" class="view-section hidden">
+        <section id="create-event-panel" class="create-event-panel">
+          <button
+            type="button"
+            id="toggle-create-event"
+            class="btn btn-secondary"
+            aria-expanded="false"
+            aria-controls="create-event-form-block"
+          >
+            Crear nuevo evento
+          </button>
+          <div
+            id="create-event-form-block"
+            class="create-event-form-block"
+            style="display: none"
+            role="region"
+            aria-labelledby="create-event-title"
+          >
+            <div class="create-event-form-card">
+              <h2 id="create-event-title">Crear evento</h2>
+              <div class="create-event-fields">
+                <input id="title" type="text" placeholder="Título" />
+                <input id="description" type="text" placeholder="Descripción" />
+                <input id="date" type="date" />
+                <input id="location" type="text" placeholder="Ubicación" />
+                <div id="create-event-categories-ui" class="hidden">
+                  <label class="create-event-field-label" for="category-select">
+                    <span>Categorías</span>
+                    <select id="category-select">
+                      <option value="">Seleccionar categoría</option>
+                    </select>
+                    <div
+                      id="selected-categories"
+                      class="selected-categories"
+                      role="list"
+                    ></div>
+                  </label>
+                </div>
+              </div>
+              <div class="create-event-actions form-actions">
+                <button
+                  id="create-event-btn"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  Crear evento
+                </button>
+              </div>
+              <p id="create-message"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="events-list-panel" aria-labelledby="events-list-title">
+          <div class="events-list-toolbar">
+            <h2 id="events-list-title">Eventos</h2>
+            <select
+              id="filter-category"
+              class="events-filter-select"
+              aria-label="Filtrar por categoría"
+            >
+              <option value="">Todas</option>
+            </select>
+          </div>
+          <div id="events-list"></div>
+        </section>
+      </div>
+
+      <div id="my-events-section" class="view-section hidden">
+        <section>
+          <h2>Mis eventos</h2>
+          <div id="my-events-list"></div>
+        </section>
+      </div>
+    </main>
+
+    <dialog
+      id="edit-event-dialog"
+      class="edit-event-dialog"
+      aria-labelledby="edit-event-dialog-title"
+    >
+      <form id="edit-event-form" class="edit-event-form" novalidate>
+        <h2 id="edit-event-dialog-title">Editar evento</h2>
+        <input type="hidden" id="edit-event-id" value="" />
+        <div class="edit-event-fields">
+          <label class="edit-event-label" for="edit-title">
+            <span>Título</span>
+            <input
+              id="edit-title"
+              type="text"
+              name="title"
+              required
+              placeholder="Título"
+            />
+          </label>
+          <label class="edit-event-label" for="edit-description">
+            <span>Descripción</span>
+            <input
+              id="edit-description"
+              type="text"
+              name="description"
+              placeholder="Descripción"
+            />
+          </label>
+          <label class="edit-event-label" for="edit-date">
+            <span>Fecha</span>
+            <input id="edit-date" type="date" name="date" required />
+          </label>
+          <label class="edit-event-label" for="edit-location">
+            <span>Ubicación</span>
+            <input
+              id="edit-location"
+              type="text"
+              name="location"
+              placeholder="Ubicación"
+            />
+          </label>
+          <label class="edit-event-label" for="edit-category-select">
+            <span>Categorías</span>
+            <select id="edit-category-select">
+              <option value="">Seleccionar categoría</option>
+            </select>
+            <div
+              id="edit-selected-categories"
+              class="selected-categories"
+              role="list"
+            ></div>
+          </label>
         </div>
-      </section>
+        <div class="edit-event-actions form-actions">
+          <button
+            type="button"
+            id="edit-event-cancel"
+            class="btn btn-secondary"
+          >
+            Cancelar
+          </button>
+          <button type="submit" id="edit-event-save" class="btn btn-primary">
+            Guardar cambios
+          </button>
+        </div>
+        <p
+          id="edit-event-message"
+          class="edit-event-message"
+          aria-live="polite"
+        ></p>
+      </form>
+    </dialog>
 
-      <section class="events-list-panel" aria-labelledby="events-list-title">
-        <h2 id="events-list-title">Eventos</h2>
-        <div id="events-list"></div>
-      </section>
+    <div
+      id="confirm-modal"
+      class="confirm-modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-title"
+      aria-hidden="true"
+    >
+      <div class="confirm-modal-backdrop" aria-hidden="true"></div>
+      <div class="confirm-modal-box">
+        <h3 id="confirm-title" class="confirm-modal-title"></h3>
+        <p id="confirm-message" class="confirm-modal-message"></p>
+        <div class="confirm-modal-actions">
+          <button type="button" id="confirm-no" class="btn btn-secondary">
+            Cancelar
+          </button>
+          <button type="button" id="confirm-yes" class="btn btn-primary">
+            Confirmar
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div id="my-events-section" class="view-section hidden">
-      <section>
-        <h2>Mis eventos</h2>
-        <div id="my-events-list"></div>
-      </section>
-    </div>
-  </main>
+    <div
+      id="toast-container"
+      class="toast-container"
+      aria-live="polite"
+      aria-relevant="additions"
+    ></div>
 
-  <dialog id="edit-event-dialog" class="edit-event-dialog" aria-labelledby="edit-event-dialog-title">
-    <form id="edit-event-form" class="edit-event-form" novalidate>
-      <h2 id="edit-event-dialog-title">Editar evento</h2>
-      <input type="hidden" id="edit-event-id" value="" />
-      <div class="edit-event-fields">
-        <label class="edit-event-label" for="edit-title">
-          <span>Título</span>
-          <input id="edit-title" type="text" name="title" required placeholder="Título" />
-        </label>
-        <label class="edit-event-label" for="edit-description">
-          <span>Descripción</span>
-          <input id="edit-description" type="text" name="description" placeholder="Descripción" />
-        </label>
-        <label class="edit-event-label" for="edit-date">
-          <span>Fecha</span>
-          <input id="edit-date" type="date" name="date" required />
-        </label>
-        <label class="edit-event-label" for="edit-location">
-          <span>Ubicación</span>
-          <input id="edit-location" type="text" name="location" placeholder="Ubicación" />
-        </label>
-      </div>
-      <div class="edit-event-actions form-actions">
-        <button type="button" id="edit-event-cancel" class="btn btn-secondary">Cancelar</button>
-        <button type="submit" id="edit-event-save" class="btn btn-primary">Guardar cambios</button>
-      </div>
-      <p id="edit-event-message" class="edit-event-message" aria-live="polite"></p>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
 </html>

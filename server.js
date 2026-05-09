@@ -4,6 +4,7 @@ import cors from "cors";
 import eventsRouter from "./routes/events.js";
 import authRouter from "./routes/auth.js";
 import registrationsRouter from "./routes/registrations.js";
+import categoriesRouter from "./routes/categories.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.static("public"));
 app.use("/api/events", eventsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/registrations", registrationsRouter);
+app.use("/api/categories", categoriesRouter);
 
 // ruta de prueba
 app.get("/health", (req, res) => {

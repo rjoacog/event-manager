@@ -219,6 +219,69 @@ export async function addCategoriesToEvent(req, res) {
   }
 }
 
+export async function syncEventCategories(req, res) {
+  try {
+    const { id } = req.params;
+    let { categories } = req.body;
+    if (!Array.isArray(categories)) {
+      return res.status(400).json({
+        error: "categories must be an array",
+      });
+    }
+
+    const normalized = [
+      ...new Set(
+        categories
+          .map((c) => Number(c))
+          .filter((n) => !Number.isNaN(n))
+      ),
+    ];
+
+    const userId = req.user.id;
+    const userRole = req.user.role;
+
+    const eventResult = await pool.query("SELECT * FROM events WHERE id = $1", [
+      id,
+    ]);
+    if (eventResult.rows.length === 0) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    const event = eventResult.rows[0];
+    const allowed =
+      Number(event.creator_id) === Number(userId) || userRole === "admin";
+    if (!allowed) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      await client.query("DELETE FROM event_categories WHERE event_id = $1", [
+        id,
+      ]);
+      for (const category_id of normalized) {
+        await client.query(
+          `INSERT INTO event_categories (event_id, category_id)
+           VALUES ($1, $2)`,
+          [id, category_id]
+        );
+      }
+      await client.query("COMMIT");
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
+
+    res.json({ message: "Categories updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to sync event categories" });
+  }
+}
+
 export async function getEventCategories(req, res) {
   try {
     const { id } = req.params;
