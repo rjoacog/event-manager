@@ -4,23 +4,23 @@
 
 Stack:
 
-- **Node.js** — runtime del servidor  
-- **Express** — API REST y archivos estáticos del frontend  
-- **PostgreSQL** — usuarios, eventos, inscripciones y categorías  
-- **JavaScript vanilla** — interfaz en `public/` (sin framework SPA)  
+- **Node.js** — runtime del servidor
+- **Express** — API REST y archivos estáticos del frontend
+- **PostgreSQL** — usuarios, eventos, inscripciones y categorías
+- **JavaScript vanilla** — interfaz en `public/` (sin framework SPA)
 - **JWT** — autenticación con token `Bearer` en rutas protegidas
 
 ---
 
 ## Funcionalidades
 
-- **Registro** e **inicio de sesión** de usuarios  
-- Autenticación **JWT**  
-- Sistema de **roles** (`user` / `admin`)  
-- **CRUD de eventos** (limitado por permisos en la API)  
-- **Inscripciones** a eventos y listado de **Mis eventos**  
-- **Categorías** con relación muchos a muchos con eventos  
-- **Filtrado de eventos por categoría**  
+- **Registro** e **inicio de sesión** de usuarios
+- Autenticación **JWT**
+- Sistema de **roles** (`user` / `admin`)
+- **CRUD de eventos** (limitado por permisos en la API)
+- **Inscripciones** a eventos y listado de **Mis eventos**
+- **Categorías** con relación muchos a muchos con eventos
+- **Filtrado de eventos por categoría**
 - Interfaz responsive
 
 ---
@@ -29,14 +29,14 @@ Stack:
 
 ### Usuario (`user`)
 
-- Ver eventos (con filtro por categoría)  
-- **Inscribirse** a eventos  
+- Ver eventos (con filtro por categoría)
+- **Inscribirse** a eventos
 - Abrir **Mis eventos** para ver inscripciones y **cancelar** una inscripción
 
 ### Administrador (`admin`)
 
-- **Crear** eventos  
-- **Editar** y **eliminar** eventos  
+- **Crear** eventos
+- **Editar** y **eliminar** eventos
 - **Asignar y sincronizar categorías** por evento en la interfaz (el catálogo de categorías está en la base)
 
 ---
@@ -61,6 +61,13 @@ project-root/
 ```
 
 También están `package.json`, `.gitignore`, `.env` local, etc.
+
+Carpetas del backend, en síntesis:
+
+- **`controllers/`** — lógica, respuestas HTTP y consultas SQL con el pool de `pg`.
+- **`routes/`** — paths y verbos; encadena `authenticate` donde hace falta.
+- **`middleware/`** — validación del JWT (`authenticate`).
+- **`db/`** — pool de conexión a PostgreSQL (`DATABASE_URL`).
 
 ---
 
@@ -223,15 +230,17 @@ Mismo origen que la API (`/api/...`).
 
 ## Notas importantes
 
-- Los administradores no se inscriben en eventos (la API lo rechaza para el rol `admin`).  
-- El catálogo de categorías se carga desde la base; los admins las asignan a eventos en la UI.  
+- Los administradores no se inscriben en eventos (la API lo rechaza para el rol `admin`).
+- El catálogo de categorías se carga desde la base; los admins las asignan a eventos en la UI.
 - Las **rutas protegidas** requieren la cabecera `Authorization: Bearer <token>`; si el token falta o no es válido, la respuesta es `401`.
 
 ---
 
 ## Interfaz
 
-Toasts, modales de confirmación y vistas distintas según `user` o `admin`.
+- Toasts para éxito y error
+- Modales de confirmación en acciones sensibles (eliminar evento, cancelar inscripción)
+- Contenido y botones distintos según rol (`user` / `admin`)
 
 ---
 
@@ -242,3 +251,31 @@ curl http://localhost:3000/health
 ```
 
 Respuesta: `{"status":"ok"}`.
+
+---
+
+## Preguntas Conceptuales
+
+### 1. ¿Qué es un servidor web y cómo funciona el ciclo request-response?
+
+Un servidor web es un programa que recibe solicitudes HTTP desde un cliente (por ejemplo, el navegador) y devuelve una respuesta. El ciclo request-response funciona cuando el cliente hace una petición a una ruta, el servidor procesa esa solicitud (validaciones, lógica, consultas SQL, etc.) y finalmente devuelve una respuesta, generalmente en formato JSON o HTML.
+
+### 2. ¿Qué es Express y por qué lo usamos en lugar de usar solo Node.js?
+
+Express es un framework para Node.js que simplifica la creación de servidores y APIs. Lo usamos porque permite organizar rutas, middlewares y controladores de manera más sencilla y ordenada. Con solo Node.js habría que manejar muchas cosas manualmente, haciendo el código más complejo y difícil de mantener.
+
+### 3. ¿Qué es un JWT y cómo se diferencia de guardar la sesión en el servidor?
+
+Un JWT (JSON Web Token) es un token que contiene información del usuario autenticada y se envía en cada request protegida. A diferencia de las sesiones tradicionales, el servidor no necesita guardar la sesión en memoria o base de datos, porque toda la información necesaria viaja dentro del token firmado.
+
+### 4. ¿Qué ventaja tiene usar un procedimiento almacenado en lugar de escribir ese SQL desde Node.js?
+
+Un procedimiento almacenado permite guardar lógica SQL directamente dentro de la base de datos. Esto ayuda a reutilizar consultas complejas, mejorar el rendimiento y mantener ciertas operaciones más centralizadas y seguras, evitando repetir lógica SQL en distintos lugares del backend.
+
+### 5. ¿Por qué es importante usar transacciones? Poné un ejemplo de cuándo un ROLLBACK salva la integridad de los datos.
+
+Las transacciones son importantes porque permiten ejecutar varias operaciones SQL como una sola unidad. Si una operación falla, se puede hacer ROLLBACK para deshacer todos los cambios y evitar datos inconsistentes. Por ejemplo, si un usuario se registra a un evento y falla alguna inserción relacionada, el rollback evita que queden datos incompletos en la base.
+
+### 6. ¿Qué es un trigger? Describe el trigger que implementaste y en qué momento se dispara.
+
+En este proyecto no implementé triggers porque eran opcionales. Sin embargo, un trigger es una acción automática que ejecuta la base de datos cuando ocurre un evento como un INSERT, UPDATE o DELETE sobre una tabla.
